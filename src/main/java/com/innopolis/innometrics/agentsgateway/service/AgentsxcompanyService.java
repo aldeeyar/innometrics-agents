@@ -1,96 +1,94 @@
 package com.innopolis.innometrics.agentsgateway.service;
 
-import com.innopolis.innometrics.agentsgateway.entity.Agentsxcompany;
-import com.innopolis.innometrics.agentsgateway.repository.AgentsxcompanyRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.innopolis.innometrics.agentsgateway.entity.AgentsXCompany;
+import com.innopolis.innometrics.agentsgateway.repository.AgentsXCompanyRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AgentsxcompanyService {
-    @Autowired
-    AgentsxcompanyRepository agentsxcompanyRepository;
+@RequiredArgsConstructor
+public class AgentsXCompanyService {
+    private final AgentsXCompanyRepository agentsxcompanyRepository;
 
-    public List<Agentsxcompany> getAgentsCompanyList() {
-        return this.agentsxcompanyRepository.findAll();
+    public List<AgentsXCompany> getAgentsCompanyList() {
+        return agentsxcompanyRepository.findAll();
     }
 
-    public List<Agentsxcompany> getAgentsCompanyByAgentId(Integer agentId) {
-        List<Agentsxcompany> agentsCompanyList = this.agentsxcompanyRepository.findAll();
-        List<Agentsxcompany> result = new ArrayList<>();
-        for (Agentsxcompany agentsxcompany : agentsCompanyList) {
-            if (agentsxcompany.getAgentid().equals(agentId)) {
+    public List<AgentsXCompany> getAgentsCompanyByAgentId(Integer agentId) {
+        List<AgentsXCompany> agentsCompanyList = agentsxcompanyRepository.findAll();
+        List<AgentsXCompany> result = new ArrayList<>();
+        for (AgentsXCompany agentsxcompany : agentsCompanyList) {
+            if (agentsxcompany.getAgentId().equals(agentId)) {
                 result.add(agentsxcompany);
             }
         }
         return result;
     }
 
-    public List<Agentsxcompany> getAgentsCompanyByCompanyId(Integer companyId) {
-        List<Agentsxcompany> agentsCompanyList = this.agentsxcompanyRepository.findAll();
-        List<Agentsxcompany> result = new ArrayList<>();
-        for (Agentsxcompany agentsxcompany : agentsCompanyList) {
-            if (agentsxcompany.getCompanyid().equals(companyId)) {
+    public List<AgentsXCompany> getAgentsCompanyByCompanyId(Integer companyId) {
+        List<AgentsXCompany> agentsCompanyList = agentsxcompanyRepository.findAll();
+        List<AgentsXCompany> result = new ArrayList<>();
+        for (AgentsXCompany agentsxcompany : agentsCompanyList) {
+            if (agentsxcompany.getCompanyId().equals(companyId)) {
                 result.add(agentsxcompany);
             }
         }
         return result;
     }
 
-    public Agentsxcompany getAgentsCompanyById(Integer configId) {
-        return this.agentsxcompanyRepository.findById(configId).orElse(null);
+    public AgentsXCompany getAgentsCompanyById(Integer configId) {
+        return agentsxcompanyRepository.findById(configId).orElse(null);
     }
 
-    public Agentsxcompany postAgentsCompany(Agentsxcompany agentsxcompany) throws Exception {
-        return this.agentsxcompanyRepository.save(agentsxcompany);
+    public AgentsXCompany postAgentsCompany(AgentsXCompany agentsxcompany) {
+        return agentsxcompanyRepository.save(agentsxcompany);
     }
 
-    public Agentsxcompany putAgentsCompany(Integer configId, Agentsxcompany agentsxcompany) throws Exception {
-        return this.agentsxcompanyRepository.findById(configId).map(agentsCompany -> {
+    public AgentsXCompany putAgentsCompany(Integer configId, AgentsXCompany agentsxcompany) {
+        return agentsxcompanyRepository.findById(configId).map(agentsCompany -> {
             agentsCompany.setAgentConfig(agentsxcompany.getAgentConfig());
-            agentsCompany.setAgentid(agentsxcompany.getAgentid());
-            // todo maybe pass external entity?
-            agentsCompany.setCompanyid(agentsxcompany.getCompanyid());
+            agentsCompany.setAgentId(agentsxcompany.getAgentId());
+            agentsCompany.setCompanyId(agentsxcompany.getCompanyId());
             agentsCompany.setKey(agentsxcompany.getKey());
             agentsCompany.setToken(agentsxcompany.getToken());
-            agentsCompany.setIsactive(agentsxcompany.getIsactive());
-
-            return this.agentsxcompanyRepository.save(agentsCompany);
-        }).orElseGet(() -> this.agentsxcompanyRepository.save(agentsxcompany));
+            agentsCompany.setIsActive(agentsxcompany.getIsActive());
+            return agentsxcompanyRepository.save(agentsCompany);
+        }).orElseGet(() -> agentsxcompanyRepository.save(agentsxcompany));
     }
 
-    public List<Agentsxcompany> deleteAgentsCompanyByAgentId(Integer agentId) {
-        return this.deleteAgentsCompanyList(this.getAgentsCompanyByAgentId(agentId));
+    public List<AgentsXCompany> deleteAgentsCompanyByAgentId(Integer agentId) {
+        return deleteAgentsCompanyList(getAgentsCompanyByAgentId(agentId));
     }
 
-    public List<Agentsxcompany> deleteAgentsCompanyByCompanyId(Integer companyId) {
-        return this.deleteAgentsCompanyList(this.getAgentsCompanyByCompanyId(companyId));
+    public List<AgentsXCompany> deleteAgentsCompanyByCompanyId(Integer companyId) {
+        return deleteAgentsCompanyList(getAgentsCompanyByCompanyId(companyId));
     }
 
-    public Agentsxcompany deleteAgentsCompanyById(Integer configId) {
-        Optional<Agentsxcompany> agentsCompany = this.agentsxcompanyRepository.findById(configId);
+    public AgentsXCompany deleteAgentsCompanyById(Integer configId) {
+        Optional<AgentsXCompany> agentsCompany = agentsxcompanyRepository.findById(configId);
         if (!agentsCompany.isPresent()) {
             return null;
         }
-        this.agentsxcompanyRepository.deleteById(configId);
+        agentsxcompanyRepository.deleteById(configId);
         return agentsCompany.get();
     }
 
-    private List<Agentsxcompany> deleteAgentsCompanyList(List<Agentsxcompany> agentsCompanyList) {
+    private List<AgentsXCompany> deleteAgentsCompanyList(List<AgentsXCompany> agentsCompanyList) {
         if (agentsCompanyList == null || agentsCompanyList.isEmpty()) {
-            return null;
+            return Collections.emptyList();
         }
-        List<Agentsxcompany> deletedAgentsCompanyList = new ArrayList<>(agentsCompanyList.size());
-        for (Agentsxcompany agentsxcompany : agentsCompanyList) {
-            Agentsxcompany deletedAgentsCompany = this.deleteAgentsCompanyById(agentsxcompany.getConfigid());
+        List<AgentsXCompany> deletedAgentsCompanyList = new ArrayList<>(agentsCompanyList.size());
+        for (AgentsXCompany agentsxcompany : agentsCompanyList) {
+            AgentsXCompany deletedAgentsCompany = this.deleteAgentsCompanyById(agentsxcompany.getConfigid());
             if (deletedAgentsCompany != null) {
                 deletedAgentsCompanyList.add(deletedAgentsCompany);
             }
         }
-
         return deletedAgentsCompanyList;
     }
 }

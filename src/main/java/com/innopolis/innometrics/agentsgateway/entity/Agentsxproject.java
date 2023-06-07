@@ -1,39 +1,32 @@
 package com.innopolis.innometrics.agentsgateway.entity;
 
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 
+import javax.persistence.*;
+import java.util.Date;
+
 @Entity
 @Table(name = "agents_x_project")
-public class Agentsxproject {
+@Data
+public class AgentsXProject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false)
-    private Integer configid;
+    @Column(updatable = false, name = "configid")
+    private Integer configId;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "agentid", updatable = false, insertable = false)
-    private Agentconfig agentConfig;
+    private AgentConfig agentConfig;
 
-    @Column
-    private Integer agentid;
+    @Column(name = "agentid")
+    private Integer agentId;
 
-    @Column
-    private Integer projectid;
+    @Column(name = "projectid")
+    private Integer projectId;
 
     @Column
     private String key;
@@ -41,8 +34,8 @@ public class Agentsxproject {
     @Column
     private String token;
 
-    @Column
-    private String isactive;
+    @Column(name = "isactive")
+    private String isActive;
 
     @CreationTimestamp
     @Column(name = "creationdate", insertable = false, updatable = false)
@@ -50,7 +43,7 @@ public class Agentsxproject {
 
     @CreatedBy
     @Column(name = "createdby", insertable = false, updatable = false)
-    private String createdby;
+    private String createdBy;
 
     @UpdateTimestamp
     @Column(name = "lastupdate", insertable = false)
@@ -58,96 +51,5 @@ public class Agentsxproject {
 
     @LastModifiedBy
     @Column(name = "updateby", insertable = false)
-    private String updateby;
-
-    public Agentsxproject() {
-    }
-
-    public Integer getConfigid() {
-        return configid;
-    }
-
-    public void setConfigid(Integer configid) {
-        this.configid = configid;
-    }
-
-    public Agentconfig getAgentConfig() {
-        return agentConfig;
-    }
-
-    public void setAgentConfig(Agentconfig agentConfig) {
-        this.agentConfig = agentConfig;
-    }
-
-    public Integer getAgentid() {
-        return agentid;
-    }
-
-    public void setAgentid(Integer agentid) {
-        this.agentid = agentid;
-    }
-
-    public Integer getProjectid() {
-        return projectid;
-    }
-
-    public void setProjectid(Integer projectid) {
-        this.projectid = projectid;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public String getIsactive() {
-        return isactive;
-    }
-
-    public void setIsactive(String isactive) {
-        this.isactive = isactive;
-    }
-
-    public Date getCreationdate() {
-        return creationdate;
-    }
-
-    public void setCreationdate(Date creationdate) {
-        this.creationdate = creationdate;
-    }
-
-    public String getCreatedby() {
-        return createdby;
-    }
-
-    public void setCreatedby(String createdby) {
-        this.createdby = createdby;
-    }
-
-    public Date getLastupdate() {
-        return lastupdate;
-    }
-
-    public void setLastupdate(Date lastupdate) {
-        this.lastupdate = lastupdate;
-    }
-
-    public String getUpdateby() {
-        return updateby;
-    }
-
-    public void setUpdateby(String updateby) {
-        this.updateby = updateby;
-    }
+    private String updateBy;
 }

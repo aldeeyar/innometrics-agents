@@ -1,11 +1,11 @@
-package com.innopolis.innometrics.agentsgateway.DTO;
+package com.innopolis.innometrics.agentsgateway.dto;
 
 public interface IAgentStatus {
-    String getAgentid();
+    String getAgentId();
 
-    String getAgentname();
+    String getAgentName();
 
     String getDescription();
 
-    String getIsconnected();
+    String getIsConnected();
 }

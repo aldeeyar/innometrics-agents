@@ -1,22 +1,12 @@
-package com.innopolis.innometrics.agentsgateway.DTO;
+package com.innopolis.innometrics.agentsgateway.dto;
 
-import java.util.ArrayList;
+import lombok.Data;
+
 import java.util.List;
 
+@Data
 public class ReposProjectListResponse {
     private List<ReposProjectDTO> reposProjectList;
-
-    public ReposProjectListResponse() {
-        this.reposProjectList = new ArrayList<>();
-    }
-
-    public List<ReposProjectDTO> getReposProjectList() {
-        return reposProjectList;
-    }
-
-    public void setReposProjectList(List<ReposProjectDTO> reposProjectList) {
-        this.reposProjectList = reposProjectList;
-    }
 
     public void add(ReposProjectDTO reposProjectDTO) {
         this.reposProjectList.add(reposProjectDTO);

@@ -1,9 +1,9 @@
 package com.innopolis.innometrics.agentsgateway.repository;
 
-import com.innopolis.innometrics.agentsgateway.entity.Agentsxcompany;
+import com.innopolis.innometrics.agentsgateway.entity.AgentsXCompany;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AgentsxcompanyRepository extends JpaRepository<Agentsxcompany, Integer> {
+public interface AgentsXCompanyRepository extends JpaRepository<AgentsXCompany, Integer> {
 }

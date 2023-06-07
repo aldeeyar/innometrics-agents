@@ -1,28 +1,23 @@
-package com.innopolis.innometrics.agentsgateway.DTO;
+package com.innopolis.innometrics.agentsgateway.dto;
+
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 public class AgentListResponse {
-    private List<AgentResponse> AgentList;
+    private List<AgentResponse> agentList;
 
     public AgentListResponse() {
-        AgentList = new ArrayList<>();
-    }
-
-    public List<AgentResponse> getAgentList() {
-        return AgentList;
-    }
-
-    public void setAgentList(List<AgentResponse> agentList) {
-        AgentList = agentList;
+        agentList = new ArrayList<>();
     }
 
     public void add(AgentResponse agentResponse) {
-        this.AgentList.add(agentResponse);
+        agentList.add(agentResponse);
     }
 
     public boolean isEmpty() {
-        return AgentList.isEmpty();
+        return agentList.isEmpty();
     }
 }

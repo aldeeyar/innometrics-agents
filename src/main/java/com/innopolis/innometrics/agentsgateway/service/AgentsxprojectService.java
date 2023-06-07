@@ -1,100 +1,98 @@
 package com.innopolis.innometrics.agentsgateway.service;
 
-import com.innopolis.innometrics.agentsgateway.entity.Agentsxproject;
-import com.innopolis.innometrics.agentsgateway.repository.AgentsxprojectRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.innopolis.innometrics.agentsgateway.entity.AgentsXProject;
+import com.innopolis.innometrics.agentsgateway.repository.AgentsXProjectRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AgentsxprojectService {
-    @Autowired
-    AgentsxprojectRepository agentsxprojectRepository;
+@RequiredArgsConstructor
+public class AgentsXProjectService {
+    private final AgentsXProjectRepository agentsxprojectRepository;
 
-    public List<Agentsxproject> getAgentsProjectList() {
-        return this.agentsxprojectRepository.findAll();
+    public List<AgentsXProject> getAgentsProjectList() {
+        return agentsxprojectRepository.findAll();
     }
 
-    public List<Agentsxproject> getAgentsProjectByAgentId(Integer agentId) {
-        List<Agentsxproject> agentsProjectList = this.agentsxprojectRepository.findAll();
-        List<Agentsxproject> result = new ArrayList<>();
-        for (Agentsxproject agentsxproject : agentsProjectList) {
-            if (agentsxproject.getAgentid().equals(agentId)) {
+    public List<AgentsXProject> getAgentsProjectByAgentId(Integer agentId) {
+        List<AgentsXProject> agentsProjectList = agentsxprojectRepository.findAll();
+        List<AgentsXProject> result = new ArrayList<>();
+        for (AgentsXProject agentsxproject : agentsProjectList) {
+            if (agentsxproject.getAgentId() != null && agentsxproject.getAgentId().equals(agentId)) {
                 result.add(agentsxproject);
             }
         }
         return result;
     }
 
-    public List<Agentsxproject> getAgentsProjectByProjectId(Integer projectId) {
-        List<Agentsxproject> agentsProjectList = this.agentsxprojectRepository.findAll();
-        List<Agentsxproject> result = new ArrayList<>();
-        for (Agentsxproject agentsxproject : agentsProjectList) {
-            if (agentsxproject.getProjectid().equals(projectId)) {
+    public List<AgentsXProject> getAgentsProjectByProjectId(Integer projectId) {
+        List<AgentsXProject> agentsProjectList = agentsxprojectRepository.findAll();
+        List<AgentsXProject> result = new ArrayList<>();
+        for (AgentsXProject agentsxproject : agentsProjectList) {
+            if (agentsxproject.getProjectId().equals(projectId)) {
                 result.add(agentsxproject);
             }
         }
         return result;
     }
 
-    public Agentsxproject getAgentsProjectByAgentIdAndProjectId(Integer agentid, Integer projectid) {
-        return this.agentsxprojectRepository.findByAgentidAndProjectid(agentid, projectid);
+    public AgentsXProject getAgentsProjectByAgentIdAndProjectId(Integer agentId, Integer projectId) {
+        return agentsxprojectRepository.findByAgentIdAndProjectId(agentId, projectId);
     }
 
-    public Agentsxproject getAgentsProjectById(Integer configId) {
-        return this.agentsxprojectRepository.findById(configId).orElse(null);
+    public AgentsXProject getAgentsProjectById(Integer configId) {
+        return agentsxprojectRepository.findById(configId).orElse(null);
     }
 
-    public Agentsxproject postAgentsProject(Agentsxproject agentsxproject) throws Exception {
-        return this.agentsxprojectRepository.save(agentsxproject);
+    public AgentsXProject postAgentsProject(AgentsXProject agentsxproject) {
+        return agentsxprojectRepository.save(agentsxproject);
     }
 
-    public Agentsxproject putAgentsProject(Integer configId, Agentsxproject agentsxproject) throws Exception {
-        return this.agentsxprojectRepository.findById(configId).map(agentsProject -> {
+    public AgentsXProject putAgentsProject(Integer configId, AgentsXProject agentsxproject) {
+        return agentsxprojectRepository.findById(configId).map(agentsProject -> {
             agentsProject.setAgentConfig(agentsxproject.getAgentConfig());
-            agentsProject.setAgentid(agentsxproject.getAgentid());
-            // todo maybe pass external entity?
-            agentsProject.setProjectid(agentsxproject.getProjectid());
+            agentsProject.setAgentId(agentsxproject.getAgentId());
+            agentsProject.setProjectId(agentsxproject.getProjectId());
             agentsProject.setKey(agentsxproject.getKey());
             agentsProject.setToken(agentsxproject.getToken());
-            agentsProject.setIsactive(agentsxproject.getIsactive());
-
-            return this.agentsxprojectRepository.save(agentsProject);
-        }).orElseGet(() -> this.agentsxprojectRepository.save(agentsxproject));
+            agentsProject.setIsActive(agentsxproject.getIsActive());
+            return agentsxprojectRepository.save(agentsProject);
+        }).orElseGet(() -> agentsxprojectRepository.save(agentsxproject));
     }
 
-    public List<Agentsxproject> deleteAgentsProjectByAgentId(Integer agentId) {
-        return this.deleteAgentsProjectList(this.getAgentsProjectByAgentId(agentId));
+    public List<AgentsXProject> deleteAgentsProjectByAgentId(Integer agentId) {
+        return deleteAgentsProjectList(getAgentsProjectByAgentId(agentId));
     }
 
-    public List<Agentsxproject> deleteAgentsProjectByProjectId(Integer projectId) {
-        return this.deleteAgentsProjectList(this.getAgentsProjectByProjectId(projectId));
+    public List<AgentsXProject> deleteAgentsProjectByProjectId(Integer projectId) {
+        return deleteAgentsProjectList(getAgentsProjectByProjectId(projectId));
     }
 
-    public Agentsxproject deleteAgentsProjectById(Integer configId) {
-        Optional<Agentsxproject> agentsProject = this.agentsxprojectRepository.findById(configId);
+    public AgentsXProject deleteAgentsProjectById(Integer configId) {
+        Optional<AgentsXProject> agentsProject = agentsxprojectRepository.findById(configId);
         if (!agentsProject.isPresent()) {
             return null;
         }
-        this.agentsxprojectRepository.deleteById(configId);
+        agentsxprojectRepository.deleteById(configId);
         return agentsProject.get();
     }
 
-    private List<Agentsxproject> deleteAgentsProjectList(List<Agentsxproject> agentsProjectList) {
+    private List<AgentsXProject> deleteAgentsProjectList(List<AgentsXProject> agentsProjectList) {
         if (agentsProjectList == null || agentsProjectList.isEmpty()) {
-            return null;
+            return Collections.emptyList();
         }
-        List<Agentsxproject> deletedAgentsProjectsList = new ArrayList<>(agentsProjectList.size());
-        for (Agentsxproject agentsxproject : agentsProjectList) {
-            Agentsxproject deletedAgentsProject = this.deleteAgentsProjectById(agentsxproject.getConfigid());
+        List<AgentsXProject> deletedAgentsProjectsList = new ArrayList<>(agentsProjectList.size());
+        for (AgentsXProject agentsxproject : agentsProjectList) {
+            AgentsXProject deletedAgentsProject = this.deleteAgentsProjectById(agentsxproject.getConfigId());
             if (deletedAgentsProject != null) {
                 deletedAgentsProjectsList.add(deletedAgentsProject);
             }
         }
-
         return deletedAgentsProjectsList;
     }
 }

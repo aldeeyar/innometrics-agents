@@ -1,22 +1,12 @@
-package com.innopolis.innometrics.agentsgateway.DTO;
+package com.innopolis.innometrics.agentsgateway.dto;
 
-import java.util.ArrayList;
+import lombok.Data;
+
 import java.util.List;
 
+@Data
 public class DataListResponse {
     private List<DataConfigDTO> dataList;
-
-    public DataListResponse() {
-        this.dataList = new ArrayList<>();
-    }
-
-    public List<DataConfigDTO> getDataList() {
-        return dataList;
-    }
-
-    public void setDataList(List<DataConfigDTO> dataList) {
-        this.dataList = dataList;
-    }
 
     public void add(DataConfigDTO data) {
         this.dataList.add(data);

@@ -1,5 +1,6 @@
 package com.innopolis.innometrics.agentsgateway.entity;
 
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
@@ -10,24 +11,25 @@ import java.util.Date;
 
 @Entity
 @Table(name = "repos_x_project")
-public class Reposxproject {
+@Data
+public class ReposXProject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false)
-    private Integer configid;
+    @Column(updatable = false, name = "configid")
+    private Integer configId;
 
-    @Column
-    private Integer agentid;
+    @Column(name = "agentid")
+    private Integer agentId;
 
-    @Column
-    private Integer projectid;
+    @Column(name = "projectid")
+    private Integer projectId;
 
-    @Column
-    private String repoid;
+    @Column(name = "repoid")
+    private String repoId;
 
-    @Column
-    private String isactive;
+    @Column(name = "isactive")
+    private String isActive;
 
     @CreationTimestamp
     @Column(name = "creationdate", insertable = false, updatable = false)
@@ -35,7 +37,7 @@ public class Reposxproject {
 
     @CreatedBy
     @Column(name = "createdby", insertable = false, updatable = false)
-    private String createdby;
+    private String createdBy;
 
     @UpdateTimestamp
     @Column(name = "lastupdate", insertable = false)
@@ -43,80 +45,5 @@ public class Reposxproject {
 
     @LastModifiedBy
     @Column(name = "updateby", insertable = false)
-    private String updateby;
-
-    public Reposxproject() {
-    }
-
-    public Integer getConfigid() {
-        return configid;
-    }
-
-    public void setConfigid(Integer configid) {
-        this.configid = configid;
-    }
-
-    public Integer getAgentid() {
-        return agentid;
-    }
-
-    public void setAgentid(Integer agentid) {
-        this.agentid = agentid;
-    }
-
-    public Integer getProjectid() {
-        return projectid;
-    }
-
-    public void setProjectid(Integer projectid) {
-        this.projectid = projectid;
-    }
-
-    public String getRepoid() {
-        return repoid;
-    }
-
-    public void setRepoid(String repoid) {
-        this.repoid = repoid;
-    }
-
-    public String getIsactive() {
-        return isactive;
-    }
-
-    public void setIsactive(String isactive) {
-        this.isactive = isactive;
-    }
-
-    public Date getCreationdate() {
-        return creationdate;
-    }
-
-    public void setCreationdate(Date creationdate) {
-        this.creationdate = creationdate;
-    }
-
-    public String getCreatedby() {
-        return createdby;
-    }
-
-    public void setCreatedby(String createdby) {
-        this.createdby = createdby;
-    }
-
-    public Date getLastupdate() {
-        return lastupdate;
-    }
-
-    public void setLastupdate(Date lastupdate) {
-        this.lastupdate = lastupdate;
-    }
-
-    public String getUpdateby() {
-        return updateby;
-    }
-
-    public void setUpdateby(String updateby) {
-        this.updateby = updateby;
-    }
+    private String updateBy;
 }

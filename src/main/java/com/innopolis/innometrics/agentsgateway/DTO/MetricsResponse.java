@@ -1,24 +1,14 @@
-package com.innopolis.innometrics.agentsgateway.DTO;
+package com.innopolis.innometrics.agentsgateway.dto;
 
-import java.util.Dictionary;
-import java.util.Hashtable;
+import lombok.Data;
 
+import java.util.HashMap;
+
+@Data
 public class MetricsResponse {
-    Hashtable<String, String> metricList;
+    HashMap<String, String> metricList;
 
     public MetricsResponse() {
-        metricList = new Hashtable<>();
-    }
-
-    public MetricsResponse(Hashtable<String, String> metricList) {
-        this.metricList = metricList;
-    }
-
-    public Hashtable<String, String> getMetricList() {
-        return metricList;
-    }
-
-    public void setMetricList(Hashtable<String, String> metricList) {
-        this.metricList = metricList;
+        metricList = new HashMap<>();
     }
 }

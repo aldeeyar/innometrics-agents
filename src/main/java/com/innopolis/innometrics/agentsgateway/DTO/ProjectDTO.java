@@ -1,45 +1,13 @@
-package com.innopolis.innometrics.agentsgateway.DTO;
+package com.innopolis.innometrics.agentsgateway.dto;
+
+import lombok.Data;
 
 import java.io.Serializable;
 
+@Data
 public class ProjectDTO implements Serializable {
-    private String ProjectId;
-    private String ProjectName;
+    private String projectId;
+    private String projectName;
     private String reference;
-    private String isconnected;
-
-    public ProjectDTO() {
-    }
-
-    public String getProjectId() {
-        return ProjectId;
-    }
-
-    public void setProjectId(String projectId) {
-        ProjectId = projectId;
-    }
-
-    public String getProjectName() {
-        return ProjectName;
-    }
-
-    public void setProjectName(String projectName) {
-        ProjectName = projectName;
-    }
-
-    public String getReference() {
-        return reference;
-    }
-
-    public void setReference(String reference) {
-        this.reference = reference;
-    }
-
-    public String getIsconnected() {
-        return isconnected;
-    }
-
-    public void setIsconnected(String isconnected) {
-        this.isconnected = isconnected;
-    }
+    private String isConnected;
 }
