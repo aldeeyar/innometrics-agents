@@ -1,32 +1,39 @@
 package com.innopolis.innometrics.agentsgateway.entity;
 
-import lombok.Data;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 
-import javax.persistence.*;
-import java.util.Date;
-
 @Entity
 @Table(name = "agents_x_project")
-@Data
-public class AgentsXProject {
+public class Agentsxproject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, name = "configid")
-    private Integer configId;
+    @Column(updatable = false)
+    private Integer configid;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "agentid", updatable = false, insertable = false)
-    private AgentConfig agentConfig;
+    private Agentconfig agentConfig;
 
-    @Column(name = "agentid")
-    private Integer agentId;
+    @Column
+    private Integer agentid;
 
-    @Column(name = "projectid")
-    private Integer projectId;
+    @Column
+    private Integer projectid;
 
     @Column
     private String key;
@@ -34,8 +41,8 @@ public class AgentsXProject {
     @Column
     private String token;
 
-    @Column(name = "isactive")
-    private String isActive;
+    @Column
+    private String isactive;
 
     @CreationTimestamp
     @Column(name = "creationdate", insertable = false, updatable = false)
@@ -43,7 +50,7 @@ public class AgentsXProject {
 
     @CreatedBy
     @Column(name = "createdby", insertable = false, updatable = false)
-    private String createdBy;
+    private String createdby;
 
     @UpdateTimestamp
     @Column(name = "lastupdate", insertable = false)
@@ -51,5 +58,96 @@ public class AgentsXProject {
 
     @LastModifiedBy
     @Column(name = "updateby", insertable = false)
-    private String updateBy;
+    private String updateby;
+
+    public Agentsxproject() {
+    }
+
+    public Integer getConfigid() {
+        return configid;
+    }
+
+    public void setConfigid(Integer configid) {
+        this.configid = configid;
+    }
+
+    public Agentconfig getAgentConfig() {
+        return agentConfig;
+    }
+
+    public void setAgentConfig(Agentconfig agentConfig) {
+        this.agentConfig = agentConfig;
+    }
+
+    public Integer getAgentid() {
+        return agentid;
+    }
+
+    public void setAgentid(Integer agentid) {
+        this.agentid = agentid;
+    }
+
+    public Integer getProjectid() {
+        return projectid;
+    }
+
+    public void setProjectid(Integer projectid) {
+        this.projectid = projectid;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getIsactive() {
+        return isactive;
+    }
+
+    public void setIsactive(String isactive) {
+        this.isactive = isactive;
+    }
+
+    public Date getCreationdate() {
+        return creationdate;
+    }
+
+    public void setCreationdate(Date creationdate) {
+        this.creationdate = creationdate;
+    }
+
+    public String getCreatedby() {
+        return createdby;
+    }
+
+    public void setCreatedby(String createdby) {
+        this.createdby = createdby;
+    }
+
+    public Date getLastupdate() {
+        return lastupdate;
+    }
+
+    public void setLastupdate(Date lastupdate) {
+        this.lastupdate = lastupdate;
+    }
+
+    public String getUpdateby() {
+        return updateby;
+    }
+
+    public void setUpdateby(String updateby) {
+        this.updateby = updateby;
+    }
 }

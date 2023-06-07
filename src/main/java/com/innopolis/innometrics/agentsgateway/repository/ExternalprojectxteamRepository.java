@@ -1,9 +1,9 @@
 package com.innopolis.innometrics.agentsgateway.repository;
 
-import com.innopolis.innometrics.agentsgateway.entity.ExternalProjectXTeam;
+import com.innopolis.innometrics.agentsgateway.entity.Externalprojectxteam;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ExternalProjectXTeamRepository extends JpaRepository<ExternalProjectXTeam, Integer> {
+public interface ExternalprojectxteamRepository extends JpaRepository<Externalprojectxteam, Integer> {
 }

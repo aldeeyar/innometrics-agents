@@ -1,39 +1,59 @@
 package com.innopolis.innometrics.agentsgateway.service;
 
-import com.innopolis.innometrics.agentsgateway.dto.*;
-import com.innopolis.innometrics.agentsgateway.entity.AgentConfig;
-import com.innopolis.innometrics.agentsgateway.entity.AgentConfigMethods;
-import com.innopolis.innometrics.agentsgateway.repository.AgentConfigMethodsRepository;
-import com.innopolis.innometrics.agentsgateway.repository.AgentConfigRepository;
-import lombok.AllArgsConstructor;
+import com.innopolis.innometrics.agentsgateway.DTO.*;
+import com.innopolis.innometrics.agentsgateway.entity.Agentconfig;
+import com.innopolis.innometrics.agentsgateway.entity.Agentconfigdetails;
+import com.innopolis.innometrics.agentsgateway.entity.Agentconfigmethods;
+import com.innopolis.innometrics.agentsgateway.repository.AgentconfigRepository;
+import com.innopolis.innometrics.agentsgateway.repository.AgentconfigmethodsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
-public class AgentConfigService {
-    private final AgentConfigRepository agentconfigRepository;
-    private final AgentConfigMethodsRepository agentconfigmethodsRepository;
-    private final AgentDataConfigService agentdataconfigService;
-    private final AgentConfigMethodsService agentconfigmethodsService;
-    private final ReposXProjectService reposxprojectService;
-    private final AgentsXProjectService agentsxprojectService;
-    private final ExternalProjectXTeamService externalprojectxteamService;
-    private final AgentsXCompanyService agentsxcompanyService;
+public class AgentconfigService {
+    @Autowired
+    AgentconfigRepository agentconfigRepository;
+    @Autowired
+    AgentconfigmethodsRepository agentconfigmethodsRepository;
 
-    public AgentConfigResponse getAgentConfig(Integer agentId, String callType) {
-        List<AgentConfigMethods> result = agentconfigmethodsRepository.findByAgentId(agentId);
+    @Autowired
+    AgentdataconfigService agentdataconfigService;
+    @Autowired
+    AgentconfigmethodsService agentconfigmethodsService;
+    @Autowired
+    ReposxprojectService reposxprojectService;
+    @Autowired
+    AgentsxprojectService agentsxprojectService;
+    @Autowired
+    ExternalprojectxteamService externalprojectxteamService;
+    @Autowired
+    AgentsxcompanyService agentsxcompanyService;
+
+    public AgentConfigResponse getAgentConfig(Integer agentId, String CallType) {
+        List<Agentconfigmethods> result = this.agentconfigmethodsRepository.findByAgentid(agentId);
         if (result == null) {
             return null;
         }
+
         AgentConfigResponse response = new AgentConfigResponse();
-        for (AgentConfigMethods agentConfigMethod : result) {
-            if (agentConfigMethod.getOperation().equals(callType) || callType == null) {
-                List<ParamsConfigDTO> parameters = CommonFieldsProcessor.createParameters(agentConfigMethod);
+
+        for (Agentconfigmethods agentConfigMethod : result) {
+            if (agentConfigMethod.getOperation().equals(CallType) || CallType == null) {
+                List<ParamsConfigDTO> parameters = new ArrayList<>();
+                for (Agentconfigdetails agentconfigdetails : agentConfigMethod.getParams()) {
+                    ParamsConfigDTO paramsConfigDTO = new ParamsConfigDTO();
+
+                    paramsConfigDTO.setParamname(agentconfigdetails.getParamname());
+                    paramsConfigDTO.setParamtype(agentconfigdetails.getParamtype());
+
+                    parameters.add(paramsConfigDTO);
+                }
                 response.addMethodConfig(
                         new MethodConfigDTO(
-                                agentConfigMethod.getMethodId(),
+                                agentConfigMethod.getMethodid(),
                                 agentConfigMethod.getOperation(),
                                 agentConfigMethod.getDescription(),
                                 parameters
@@ -41,63 +61,77 @@ public class AgentConfigService {
                 );
             }
         }
+
         return response;
     }
 
     public AgentListResponse getAgentList(Integer projectId) {
         AgentListResponse agentListResponse = new AgentListResponse();
-        for (IAgentStatus agentStatus : agentconfigRepository.getAgentList(projectId)) {
+
+        for (IAgentStatus agentStatus : this.agentconfigRepository.getAgentList(projectId)) {
             agentListResponse.add(
                     new AgentResponse(
-                            Integer.valueOf(agentStatus.getAgentId()),
-                            agentStatus.getAgentName(),
+                            Integer.valueOf(agentStatus.getAgentid()),
+                            agentStatus.getAgentname(),
                             agentStatus.getDescription(),
-                            agentStatus.getIsConnected()
+                            agentStatus.getIsconnected()
                     )
             );
         }
+
         return agentListResponse;
     }
 
-    public AgentConfig getAgentById(Integer agentId) {
-        return agentconfigRepository.findByAgentId(agentId);
+    public Agentconfig getAgentById(Integer agentId) {
+        return this.agentconfigRepository.findByAgentid(agentId);
     }
 
-    public AgentConfig postAgent(AgentConfig agentconfig) {
-        return agentconfigRepository.save(agentconfig);
+    public Agentconfig postAgent(Agentconfig agentconfig) {
+        return this.agentconfigRepository.save(agentconfig);
     }
 
-    public AgentConfig putAgent(Integer agentId, AgentConfig agentconfig) {
-        return agentconfigRepository.findById(agentId).map(agent -> {
-            agent.setAgentName(agentconfig.getAgentName());
+    public Agentconfig putAgent(Integer agentId, Agentconfig agentconfig) {
+        return this.agentconfigRepository.findById(agentId).map(agent -> {
+            agent.setAgentname(agentconfig.getAgentname());
             agent.setDescription(agentconfig.getDescription());
-            agent.setIsActive(agentconfig.getIsActive());
-            agent.setSourceType(agentconfig.getSourceType());
-            agent.setDbSchemaSource(agentconfig.getDbSchemaSource());
-            agent.setRepoIdField(agentconfig.getRepoIdField());
-            agent.setOauthUri(agentconfig.getOauthUri());
-            agent.setAuthenticationMethod(agentconfig.getAuthenticationMethod());
-            agent.setAccessTokenEndpoint(agentconfig.getAccessTokenEndpoint());
-            agent.setAuthorizationBaseUrl(agentconfig.getAuthorizationBaseUrl());
-            agent.setRequestTokenEndpoint(agentconfig.getRequestTokenEndpoint());
+            agent.setIsactive(agentconfig.getIsactive());
+            agent.setSourcetype(agentconfig.getSourcetype());
+            agent.setDbschemasource(agentconfig.getDbschemasource());
+            agent.setRepoidfield(agentconfig.getRepoidfield());
+            agent.setOauthuri(agentconfig.getOauthuri());
+            agent.setAuthenticationmethod(agentconfig.getAuthenticationmethod());
+            agent.setAccesstokenendpoint(agentconfig.getAccesstokenendpoint());
+            agent.setAuthorizationbaseurl(agentconfig.getAuthorizationbaseurl());
+            agent.setRequesttokenendpoint(agentconfig.getRequesttokenendpoint());
             agent.setApikey(agentconfig.getApikey());
-            agent.setApiSecret(agentconfig.getApiSecret());
-            return agentconfigRepository.save(agent);
-        }).orElseGet(() -> agentconfigRepository.save(agentconfig));
+            agent.setApisecret(agentconfig.getApisecret());
+
+            return this.agentconfigRepository.save(agent);
+        }).orElseGet(() -> this.agentconfigRepository.save(agentconfig));
     }
 
-    public AgentConfig deleteAgentById(Integer agentId) {
-        AgentConfig agentconfig = agentconfigRepository.findByAgentId(agentId);
+    public Agentconfig deleteAgentById(Integer agentId) {
+        // Check agent existence
+        Agentconfig agentconfig = this.agentconfigRepository.findByAgentid(agentId);
         if (agentconfig == null) {
             return null;
         }
-        agentconfigmethodsService.deleteMethodsByAgentId(agentId);
-        agentdataconfigService.deleteDataByAgentId(agentId);
-        reposxprojectService.deleteReposProjectByAgentId(agentId);
-        agentsxprojectService.deleteAgentsProjectByAgentId(agentId);
-        externalprojectxteamService.deleteExternalProjectTeamByAgentId(agentId);
-        agentsxcompanyService.deleteAgentsCompanyByAgentId(agentId);
-        agentconfigRepository.deleteById(agentId);
+
+        // Delete methods which belong to this agent
+        this.agentconfigmethodsService.deleteMethodsByAgentId(agentId);
+        // Delete data which belong to this agent
+        this.agentdataconfigService.deleteDataByAgentId(agentId);
+        // Delete ReposProject entries which belong to this agent
+        this.reposxprojectService.deleteReposProjectByAgentId(agentId);
+        // Delete AgentsProject entries which belong to this agent
+        this.agentsxprojectService.deleteAgentsProjectByAgentId(agentId);
+        // Delete ExternalProjectTeam entries which belong to this agent
+        this.externalprojectxteamService.deleteExternalProjectTeamByAgentId(agentId);
+        // Delete AgentsCompany entries which belong to this agent
+        this.agentsxcompanyService.deleteAgentsCompanyByAgentId(agentId);
+
+        // Delete agent itself
+        this.agentconfigRepository.deleteById(agentId);
         return agentconfig;
     }
 }

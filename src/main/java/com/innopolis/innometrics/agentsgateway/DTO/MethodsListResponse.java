@@ -1,12 +1,22 @@
-package com.innopolis.innometrics.agentsgateway.dto;
+package com.innopolis.innometrics.agentsgateway.DTO;
 
-import lombok.Data;
-
+import java.util.ArrayList;
 import java.util.List;
 
-@Data
 public class MethodsListResponse {
     private List<MethodConfigDTO> methodsList;
+
+    public MethodsListResponse() {
+        methodsList = new ArrayList<>();
+    }
+
+    public List<MethodConfigDTO> getMethodsList() {
+        return methodsList;
+    }
+
+    public void setMethodsList(List<MethodConfigDTO> methodsList) {
+        this.methodsList = methodsList;
+    }
 
     public void add(MethodConfigDTO methodConfigDTO) {
         this.methodsList.add(methodConfigDTO);

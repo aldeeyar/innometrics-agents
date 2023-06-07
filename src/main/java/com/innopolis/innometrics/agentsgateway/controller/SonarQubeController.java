@@ -1,25 +1,35 @@
 package com.innopolis.innometrics.agentsgateway.controller;
 
-import com.innopolis.innometrics.agentsgateway.dto.MetricsResponse;
-import com.innopolis.innometrics.agentsgateway.dto.ProjectListResponse;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.innopolis.innometrics.agentsgateway.DTO.MetricsResponse;
+import com.innopolis.innometrics.agentsgateway.DTO.ProjectListResponse;
+import com.innopolis.innometrics.agentsgateway.entity.sonarqube.Coverage;
 import com.innopolis.innometrics.agentsgateway.service.SonarQubeService;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController("sonarqube")
-@AllArgsConstructor
 public class SonarQubeController {
-    private final SonarQubeService sonarQubeService;
+
+    @Autowired
+    SonarQubeService sonarQubeService;
 
     @GetMapping("projects")
     public ProjectListResponse getProjectList(){
         return sonarQubeService.getProjectList();
     }
 
+//    @GetMapping("coverage")
+//    public Coverage getLastCoverage(@RequestParam Long projectAnalysisid){
+//        return sonarQubeService.getLastCoverage(projectAnalysisid);
+//    }
 
     @GetMapping("metrics")
     public MetricsResponse getMetrics(){
@@ -27,9 +37,10 @@ public class SonarQubeController {
     }
 
     @GetMapping("metric/history")
-    public ResponseEntity<Object> getHistoryForMetric(@RequestParam String innoProjectId,
-                                                      @RequestParam String sonarProjectId) {
-        Object o = sonarQubeService.getHistoryOfMetrics(sonarProjectId);
+    public ResponseEntity<?> getHistoryForMetric(@RequestParam String InnoProjectId,
+                                                 @RequestParam String SonarProjectId) throws Exception {
+        Object o = sonarQubeService.getHistroyOfMetrics(SonarProjectId);
+
         if (o != null)
             return new ResponseEntity<>(o, HttpStatus.OK);
         else

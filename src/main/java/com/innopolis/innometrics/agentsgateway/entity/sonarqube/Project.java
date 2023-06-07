@@ -2,10 +2,7 @@ package com.innopolis.innometrics.agentsgateway.entity.sonarqube;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "project", schema = "sonarqube")
@@ -16,11 +13,12 @@ public class Project {
     private Long id;
 
     @Column(name = "projectid")
-    private String projectId;
+    private String projectid;
 
     @Column(name = "projectname")
-    private String projectName;
+    private String projectname;
 
     @Column(name = "providerid")
-    private Long providerId;
+    private Long providerid;
+
 }

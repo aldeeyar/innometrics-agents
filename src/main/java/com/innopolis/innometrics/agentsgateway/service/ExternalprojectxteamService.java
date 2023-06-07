@@ -1,93 +1,95 @@
 package com.innopolis.innometrics.agentsgateway.service;
 
-import com.innopolis.innometrics.agentsgateway.entity.ExternalProjectXTeam;
-import com.innopolis.innometrics.agentsgateway.repository.ExternalProjectXTeamRepository;
-import lombok.RequiredArgsConstructor;
+import com.innopolis.innometrics.agentsgateway.entity.Externalprojectxteam;
+import com.innopolis.innometrics.agentsgateway.repository.ExternalprojectxteamRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
-public class ExternalProjectXTeamService {
-    private final ExternalProjectXTeamRepository externalprojectxteamRepository;
+public class ExternalprojectxteamService {
+    @Autowired
+    ExternalprojectxteamRepository externalprojectxteamRepository;
 
-    public List<ExternalProjectXTeam> getExternalProjectTeamList() {
-        return externalprojectxteamRepository.findAll();
+    public List<Externalprojectxteam> getExternalProjectTeamList() {
+        return this.externalprojectxteamRepository.findAll();
     }
 
-    public List<ExternalProjectXTeam> getExternalProjectTeamByAgentId(Integer agentId) {
-        List<ExternalProjectXTeam> externalProjectTeamList = externalprojectxteamRepository.findAll();
-        List<ExternalProjectXTeam> result = new ArrayList<>();
-        for (ExternalProjectXTeam externalprojectxteam : externalProjectTeamList) {
-            if (externalprojectxteam.getAgentId().equals(agentId)) {
+    public List<Externalprojectxteam> getExternalProjectTeamByAgentId(Integer agentId) {
+        List<Externalprojectxteam> externalProjectTeamList = this.externalprojectxteamRepository.findAll();
+        List<Externalprojectxteam> result = new ArrayList<>();
+        for (Externalprojectxteam externalprojectxteam : externalProjectTeamList) {
+            if (externalprojectxteam.getAgentid().equals(agentId)) {
                 result.add(externalprojectxteam);
             }
         }
         return result;
     }
 
-    public List<ExternalProjectXTeam> getExternalProjectTeamByTeamId(Integer teamId) {
-        List<ExternalProjectXTeam> externalProjectTeamList = externalprojectxteamRepository.findAll();
-        List<ExternalProjectXTeam> result = new ArrayList<>();
-        for (ExternalProjectXTeam externalprojectxteam : externalProjectTeamList) {
-            if (externalprojectxteam.getTeamId().equals(teamId)) {
+    public List<Externalprojectxteam> getExternalProjectTeamByTeamId(Integer teamId) {
+        List<Externalprojectxteam> externalProjectTeamList = this.externalprojectxteamRepository.findAll();
+        List<Externalprojectxteam> result = new ArrayList<>();
+        for (Externalprojectxteam externalprojectxteam : externalProjectTeamList) {
+            if (externalprojectxteam.getTeamid().equals(teamId)) {
                 result.add(externalprojectxteam);
             }
         }
         return result;
     }
 
-    public ExternalProjectXTeam getExternalProjectTeamById(Integer configId) {
-        return externalprojectxteamRepository.findById(configId).orElse(null);
+    public Externalprojectxteam getExternalProjectTeamById(Integer configId) {
+        return this.externalprojectxteamRepository.findById(configId).orElse(null);
     }
 
-    public ExternalProjectXTeam postExternalProjectTeam(ExternalProjectXTeam externalprojectxteam) {
-        return externalprojectxteamRepository.save(externalprojectxteam);
+    public Externalprojectxteam postExternalProjectTeam(Externalprojectxteam externalprojectxteam) throws Exception {
+        return this.externalprojectxteamRepository.save(externalprojectxteam);
     }
 
-    public ExternalProjectXTeam putExternalProjectTeam(Integer configId, ExternalProjectXTeam externalprojectxteam) {
-        return externalprojectxteamRepository.findById(configId).map(externalProjectTeam -> {
+    public Externalprojectxteam putExternalProjectTeam(Integer configId, Externalprojectxteam externalprojectxteam) throws Exception {
+        return this.externalprojectxteamRepository.findById(configId).map(externalProjectTeam -> {
             externalProjectTeam.setAgentConfig(externalprojectxteam.getAgentConfig());
-            externalProjectTeam.setAgentId(externalprojectxteam.getAgentId());
-            externalProjectTeam.setTeamId(externalprojectxteam.getTeamId());
-            externalProjectTeam.setRepoId(externalprojectxteam.getRepoId());
-            externalProjectTeam.setIsActive(externalprojectxteam.getIsActive());
-            return externalprojectxteamRepository.save(externalProjectTeam);
-        }).orElseGet(() -> externalprojectxteamRepository.save(externalprojectxteam));
+            externalProjectTeam.setAgentid(externalprojectxteam.getAgentid());
+            // todo maybe pass external entity?
+            externalProjectTeam.setTeamid(externalprojectxteam.getTeamid());
+            externalProjectTeam.setRepoid(externalprojectxteam.getRepoid());
+            externalProjectTeam.setIsactive(externalprojectxteam.getIsactive());
+
+            return this.externalprojectxteamRepository.save(externalProjectTeam);
+        }).orElseGet(() -> this.externalprojectxteamRepository.save(externalprojectxteam));
     }
 
-    public List<ExternalProjectXTeam> deleteExternalProjectTeamByAgentId(Integer agentId) {
-        return deleteExternalProjectList(getExternalProjectTeamByAgentId(agentId));
+    public List<Externalprojectxteam> deleteExternalProjectTeamByAgentId(Integer agentId) {
+        return this.deleteExternalProjectList(this.getExternalProjectTeamByAgentId(agentId));
     }
 
-    public List<ExternalProjectXTeam> deleteExternalProjectTeamByTeamId(Integer teamId) {
-        return deleteExternalProjectList(getExternalProjectTeamByTeamId(teamId));
+    public List<Externalprojectxteam> deleteExternalProjectTeamByTeamId(Integer teamId) {
+        return this.deleteExternalProjectList(this.getExternalProjectTeamByTeamId(teamId));
     }
 
-    public ExternalProjectXTeam deleteExternalProjectTeamById(Integer configId) {
-        Optional<ExternalProjectXTeam> externalProjectTeam = externalprojectxteamRepository.findById(configId);
+    public Externalprojectxteam deleteExternalProjectTeamById(Integer configId) {
+        Optional<Externalprojectxteam> externalProjectTeam = this.externalprojectxteamRepository.findById(configId);
         if (!externalProjectTeam.isPresent()) {
             return null;
         }
-        externalprojectxteamRepository.deleteById(configId);
+        this.externalprojectxteamRepository.deleteById(configId);
         return externalProjectTeam.get();
     }
 
-    private List<ExternalProjectXTeam> deleteExternalProjectList(List<ExternalProjectXTeam> externalProjectList) {
+    private List<Externalprojectxteam> deleteExternalProjectList(List<Externalprojectxteam> externalProjectList) {
         if (externalProjectList == null || externalProjectList.isEmpty()) {
-            return Collections.emptyList();
+            return null;
         }
-        List<ExternalProjectXTeam> deletedExternalProjectsList = new ArrayList<>(externalProjectList.size());
-        for (ExternalProjectXTeam externalprojectxteam : externalProjectList) {
-            ExternalProjectXTeam deletedExternalProjectTeam = deleteExternalProjectTeamById(externalprojectxteam.getConfigId());
+        List<Externalprojectxteam> deletedExternalProjectsList = new ArrayList<>(externalProjectList.size());
+        for (Externalprojectxteam externalprojectxteam : externalProjectList) {
+            Externalprojectxteam deletedExternalProjectTeam = this.deleteExternalProjectTeamById(externalprojectxteam.getConfigid());
             if (deletedExternalProjectTeam != null) {
                 deletedExternalProjectsList.add(deletedExternalProjectTeam);
             }
         }
+
         return deletedExternalProjectsList;
     }
 }

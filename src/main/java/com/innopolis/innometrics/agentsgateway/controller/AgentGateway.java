@@ -1,12 +1,10 @@
 package com.innopolis.innometrics.agentsgateway.controller;
 
-import com.innopolis.innometrics.agentsgateway.dto.ConnectProjectRequest;
-import com.innopolis.innometrics.agentsgateway.dto.ProjectListResponse;
-import com.innopolis.innometrics.agentsgateway.dto.RepoDataPerProjectResponse;
-import com.innopolis.innometrics.agentsgateway.service.AgentsHandler;
-import com.innopolis.innometrics.agentsgateway.service.OAuthService;
+import com.innopolis.innometrics.agentsgateway.DTO.*;
+import com.innopolis.innometrics.agentsgateway.service.*;
 import com.jayway.jsonpath.JsonPath;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,111 +15,137 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Scanner;
-
-import static com.innopolis.innometrics.agentsgateway.constants.HeaderConstants.*;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping(value = "/AgentGateway", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT})
-@RequiredArgsConstructor
 public class AgentGateway {
-    private final AgentsHandler agentsHandler;
-    private final OAuthService oAuthService;
+
+    @Autowired
+    AgentsHandler agentsHandler;
+
+    @Autowired
+    private OAuthService oAuthService;
 
     @GetMapping("/projectList")
-    public ResponseEntity<ProjectListResponse> getProjectList(@RequestParam Integer agentID,
-                                                              @RequestParam Integer projectId,
+    public ResponseEntity<ProjectListResponse> getProjectList(@RequestParam Integer AgentID,
+                                                              @RequestParam Integer ProjectId,
                                                               UriComponentsBuilder ucBuilder) {
+
         ProjectListResponse response = null;
         try {
-            response = agentsHandler.getProjectList(agentID, projectId);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
+            response = agentsHandler.getProjectList(AgentID, ProjectId);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/connectProject")
-    public ResponseEntity<Boolean> getConnectProject(@RequestBody ConnectProjectRequest request,
-                                                     UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<?> getConnectProject(@RequestBody ConnectProjectRequest request,
+                                               UriComponentsBuilder ucBuilder) {
+
         Boolean response = false;
         try {
             response = agentsHandler.getConnectProject(request);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-        if (Boolean.TRUE.equals(response))
-            return new ResponseEntity<>(true, HttpStatus.OK);
+        if (response)
+            return new ResponseEntity<>(response, HttpStatus.OK);
         else
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
 
     @GetMapping("/projectData")
-    public ResponseEntity<RepoDataPerProjectResponse> getProjectData(@RequestParam Integer projectId) {
-        RepoDataPerProjectResponse response = agentsHandler.getRepoDataPerProject(projectId);
+    public ResponseEntity<RepoDataPerProjectResponse> getProjectData(@RequestParam Integer ProjectId) {
+
+        RepoDataPerProjectResponse response = agentsHandler.getRepoDataPerProject(ProjectId);
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/me/{agentId}/{projectId}")
-    public void me(HttpServletResponse response, @PathVariable Integer agentId, @PathVariable Integer projectId,
-                   @RequestParam String cb) {
-        String authURL = oAuthService.getAuthorizationURL(agentId, projectId, cb);
-        response.setHeader(LOCATION.getValue(), authURL);
-        response.setHeader(ACCEPT.getValue(), APPLICATION_JSON.getValue());
+    @GetMapping(value = "/me/{AgentId}/{projectid}")
+    public void me(HttpServletResponse response, @PathVariable Integer AgentId, @PathVariable Integer projectid, @RequestParam String cb) throws InterruptedException, ExecutionException, IOException {
+        String AuthURL =  oAuthService.getAuthorizationURL(AgentId, projectid, cb);
+
+        response.setHeader("Location", AuthURL);
+        response.setHeader("Accept", "application/json");
         response.setStatus(302);
     }
 
-    @GetMapping("/OAuth/{agentId}/{userid}")
-    public void oAuth(HttpServletResponse response,
-                      @PathVariable Integer agentId,
-                      @PathVariable Integer userid,
-                      @RequestParam String oauthToken,
-                      @RequestParam String oauthVerifier,
-                      @RequestParam String cb) {
-        oAuthService.storeToken(agentId, userid, oauthVerifier, cb);
-        response.setHeader(LOCATION.getValue(), cb);
-        response.setHeader(ACCEPT.getValue(), APPLICATION_JSON.getValue());
+    @GetMapping("/OAuth/{AgentId}/{userid}")
+    public void OAuth(HttpServletResponse response,
+                        @PathVariable Integer AgentId,
+                        @PathVariable Integer userid,
+                        @RequestParam String oauth_token,
+                        @RequestParam String oauth_verifier,
+                        @RequestParam String cb) {
+
+        oAuthService.storeToken(AgentId, userid, oauth_verifier, cb);
+        //return oauth_verifier;
+
+        response.setHeader("Location", cb);
+        response.setHeader("Accept", "application/json");
         response.setStatus(302);
     }
 
 
     @GetMapping("/OAuth20/")
-    public void oAuth20(HttpServletResponse response,
-                        @RequestParam Integer agentId,
-                        @RequestParam Integer projectId,
-                        @RequestParam String code,
-                        @RequestParam String cb) {
-        oAuthService.storeToken(agentId, projectId, code, cb);
-        response.setHeader(LOCATION.getValue(), cb);
-        response.setHeader(ACCEPT.getValue(), APPLICATION_JSON.getValue());
+    public void OAuth20(HttpServletResponse response,
+                          @RequestParam Integer agentid,
+                          @RequestParam Integer projectid,
+                          @RequestParam String code,
+                          @RequestParam String cb) {
+        oAuthService.storeToken(agentid, projectid, code, cb);
+        //return code;
+
+        response.setHeader("Location", cb);
+        response.setHeader("Accept", "application/json");
         response.setStatus(302);
     }
 
 
     @GetMapping("/Simple/")
-    public void oAuthSimple(HttpServletResponse response,
-                            @RequestParam Integer agentId,
-                            @RequestParam Integer projectId,
-                            @RequestParam String code,
-                            @RequestParam String cb) {
-        oAuthService.storeToken(agentId, projectId, code, cb);
-        response.setHeader(LOCATION.getValue(), cb);
-        response.setHeader(ACCEPT.getValue(), APPLICATION_JSON.getValue());
+    public void OAuthSimple(HttpServletResponse response,
+                        @RequestParam Integer agentid,
+                        @RequestParam Integer projectid,
+                        @RequestParam String code,
+                        @RequestParam String cb) {
+        oAuthService.storeToken(agentid, projectid, code, cb);
+        //return code;
+
+        response.setHeader("Location", cb);
+        response.setHeader("Accept", "application/json");
         response.setStatus(302);
     }
 
     @PostMapping("/webhook")
-    public Object webhookTest(HttpServletRequest request, @RequestParam String pathRule) throws IOException {
+    public Object webhooktest(HttpServletRequest request, @RequestParam String pathRule) throws IOException {
         Enumeration<String> headerNames = request.getHeaderNames();
+        String headername = "";
         if (headerNames != null) {
             while (headerNames.hasMoreElements()) {
-                headerNames.nextElement();
+                headername = headerNames.nextElement();
+                System.out.println("Header - " + headername+": " + request.getHeader(headername));
             }
         }
-        Scanner s = new Scanner(request.getInputStream(), UTF.getValue()).useDelimiter("\\A");
+
+        Scanner s = new Scanner(request.getInputStream(), "UTF-8").useDelimiter("\\A");
+//        return s.hasNext() ? s.next() : "";
         String jsonString = s.hasNext() ? s.next() : "";
-        return JsonPath.parse(jsonString).read("$..conditions[metric, value, status]");
+//        Object dataObject = JsonPath.parse(jsonString).read("$" + pathRule);
+        Object dataObject = JsonPath.parse(jsonString).read("$..conditions[metric, value, status]");
+        return  dataObject;
+//        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 }

@@ -1,79 +1,80 @@
 package com.innopolis.innometrics.agentsgateway.service;
 
-import com.innopolis.innometrics.agentsgateway.entity.AgentDataConfig;
-import com.innopolis.innometrics.agentsgateway.repository.AgentDataConfigRepository;
-import lombok.AllArgsConstructor;
+import com.innopolis.innometrics.agentsgateway.entity.Agentdataconfig;
+import com.innopolis.innometrics.agentsgateway.repository.AgentdataconfigRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
-public class AgentDataConfigService {
-    private final AgentDataConfigRepository agentdataconfigRepository;
+public class AgentdataconfigService {
+    @Autowired
+    AgentdataconfigRepository agentdataconfigRepository;
 
-    public List<AgentDataConfig> getDataList() {
-        return agentdataconfigRepository.findAll();
+    public List<Agentdataconfig> getDataList() {
+        return this.agentdataconfigRepository.findAll();
     }
 
-    public List<AgentDataConfig> getDataAgentsByAgentId(Integer agentId) {
-        List<AgentDataConfig> dataList = agentdataconfigRepository.findAll();
-        List<AgentDataConfig> result = new ArrayList<>();
-        for (AgentDataConfig agentdataconfig : dataList) {
-            if (agentdataconfig.getAgentId().equals(agentId)) {
+    public List<Agentdataconfig> getDataAgentsByAgentId(Integer agentId) {
+        List<Agentdataconfig> dataList = this.agentdataconfigRepository.findAll();
+        List<Agentdataconfig> result = new ArrayList<>();
+        for (Agentdataconfig agentdataconfig : dataList) {
+            if (agentdataconfig.getAgentid().equals(agentId)) {
                 result.add(agentdataconfig);
             }
         }
         return result;
     }
 
-    public AgentDataConfig getDataById(Integer dataId) {
-        return agentdataconfigRepository.findById(dataId).orElse(null);
+    public Agentdataconfig getDataById(Integer dataId) {
+        return this.agentdataconfigRepository.findById(dataId).orElse(null);
     }
 
-    public AgentDataConfig postData(AgentDataConfig agentdataconfig) {
-        return agentdataconfigRepository.save(agentdataconfig);
+    public Agentdataconfig postData(Agentdataconfig agentdataconfig) {
+        return this.agentdataconfigRepository.save(agentdataconfig);
     }
 
-    public AgentDataConfig putData(Integer dataId, AgentDataConfig data) {
-        return agentdataconfigRepository.findById(dataId).map(agentData -> {
-            agentData.setAgentId(data.getAgentId());
+    public Agentdataconfig putData(Integer dataId, Agentdataconfig data) {
+        return this.agentdataconfigRepository.findById(dataId).map(agentData -> {
+            agentData.setAgentid(data.getAgentid());
             agentData.setAgentConfig(data.getAgentConfig());
-            agentData.setSchemaName(data.getSchemaName());
-            agentData.setTableName(data.getTableName());
-            agentData.setEventDateField(data.getEventDateField());
-            agentData.setEventAuthorField(data.getEventAuthorField());
-            agentData.setEventDescriptionField(data.getEventDescriptionField());
-            agentData.setEventType(data.getEventType());
-            agentData.setIsActive(data.getIsActive());
-            return agentdataconfigRepository.save(agentData);
-        }).orElseGet(() -> agentdataconfigRepository.save(data));
+            agentData.setSchemaname(data.getSchemaname());
+            agentData.setTablename(data.getTablename());
+            agentData.setEventdatefield(data.getEventdatefield());
+            agentData.setEventauthorfield(data.getEventauthorfield());
+            agentData.setEventdescriptionfield(data.getEventdescriptionfield());
+            agentData.setEventtype(data.getEventtype());
+            agentData.setIsactive(data.getIsactive());
+
+            return this.agentdataconfigRepository.save(agentData);
+        }).orElseGet(() -> this.agentdataconfigRepository.save(data));
     }
 
-    public List<AgentDataConfig> deleteDataByAgentId(Integer agentId) {
-        List<AgentDataConfig> dataList = getDataAgentsByAgentId(agentId);
+    public List<Agentdataconfig> deleteDataByAgentId(Integer agentId) {
+        List<Agentdataconfig> dataList = this.getDataAgentsByAgentId(agentId);
         if (dataList == null || dataList.isEmpty()) {
-            return Collections.emptyList();
+            return null;
         }
-        List<AgentDataConfig> deletedDataList = new ArrayList<>(dataList.size());
-        for (AgentDataConfig data : dataList) {
-            AgentDataConfig deletedData = this.deleteDataById(data.getDataConfigId());
+        List<Agentdataconfig> deletedDataList = new ArrayList<>(dataList.size());
+        for (Agentdataconfig data : dataList) {
+            Agentdataconfig deletedData = this.deleteDataById(data.getDatacofingid());
             if (deletedData != null) {
                 deletedDataList.add(deletedData);
             }
         }
+
         return deletedDataList;
     }
 
-    public AgentDataConfig deleteDataById(Integer dataId) {
-        Optional<AgentDataConfig> data = agentdataconfigRepository.findById(dataId);
+    public Agentdataconfig deleteDataById(Integer dataId) {
+        Optional<Agentdataconfig> data = this.agentdataconfigRepository.findById(dataId);
         if (!data.isPresent()) {
             return null;
         }
-        agentdataconfigRepository.deleteById(dataId);
+        this.agentdataconfigRepository.deleteById(dataId);
         return data.get();
     }
 }

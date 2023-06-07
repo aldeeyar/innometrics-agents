@@ -16,7 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Table(name = "agentconfigdetails")
-public class AgentConfigDetails {
+public class Agentconfigdetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,25 +25,25 @@ public class AgentConfigDetails {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "methodid")
-    private AgentConfigMethods agentconfigmethods;
+    private Agentconfigmethods agentconfigmethods;
 
-    @Column(name = "paramname")
-    private String paramName;
+    @Column
+    private String paramname;
 
-    @Column(name = "paramtype")
-    private String paramType;
+    @Column
+    private String paramtype;
 
-    @Column(name = "requestparam")
-    private String requestParam;
+    @Column
+    private String requestparam;
 
-    @Column(name = "requesttype")
-    private String requestType;
+    @Column
+    private String requesttype;
 
-    @Column(name = "isactive")
-    private String isActive;
+    @Column
+    private String isactive;
 
-    @Column(name = "defaultvalue")
-    private String defaultValue;
+    @Column
+    private String defaultvalue;
 
     @CreationTimestamp
     @Column(name = "creationdate", insertable = false, updatable = false)
@@ -51,7 +51,7 @@ public class AgentConfigDetails {
 
     @CreatedBy
     @Column(name = "createdby", insertable = false, updatable = false)
-    private String createdBy;
+    private String createdby;
 
     @UpdateTimestamp
     @Column(name = "lastupdate", insertable = false)
@@ -59,5 +59,6 @@ public class AgentConfigDetails {
 
     @LastModifiedBy
     @Column(name = "updateby", insertable = false)
-    private String updateBy;
+    private String updateby;
+
 }
