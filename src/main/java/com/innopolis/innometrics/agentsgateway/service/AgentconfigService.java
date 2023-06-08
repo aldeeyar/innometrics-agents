@@ -39,7 +39,7 @@ public class AgentconfigService {
     AgentsxcompanyService agentsxcompanyService;
 
     public AgentConfigResponse getAgentConfig(Integer agentId, String CallType) {
-        List<Agentconfigmethods> result = this.agentconfigmethodsRepository.findByAgentId(agentId);
+        List<Agentconfigmethods> result = this.agentconfigmethodsRepository.findByAgentid(agentId);
         if (result == null) {
             return null;
         }

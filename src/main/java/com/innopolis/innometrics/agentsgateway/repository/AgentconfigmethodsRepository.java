@@ -9,7 +9,7 @@ import com.innopolis.innometrics.agentsgateway.entity.Agentconfigmethods;
 
 @Repository
 public interface AgentconfigmethodsRepository extends JpaRepository<Agentconfigmethods, Integer> {
-    List<Agentconfigmethods> findByAgentId(Integer agentId);
+    List<Agentconfigmethods> findByAgentid(Integer agentId);
 
     Agentconfigmethods findByAgentidAndOperation(Integer agentId, String operation);
 

@@ -28,7 +28,7 @@ public class AgentconfigmethodsService {
     }
 
     public List<Agentconfigmethods> getMethodsByAgentId(Integer agentId) {
-        return this.agentconfigmethodsRepository.findByAgentId(agentId);
+        return this.agentconfigmethodsRepository.findByAgentid(agentId);
     }
 
     public Agentconfigmethods getMethodById(Integer methodId) {
@@ -70,7 +70,7 @@ public class AgentconfigmethodsService {
     }
 
     public List<Agentconfigmethods> deleteMethodsByAgentId(Integer agentId) {
-        List<Agentconfigmethods> methods = this.agentconfigmethodsRepository.findByAgentId(agentId);
+        List<Agentconfigmethods> methods = this.agentconfigmethodsRepository.findByAgentid(agentId);
         if (methods == null || methods.isEmpty()) {
             return null;
         }
