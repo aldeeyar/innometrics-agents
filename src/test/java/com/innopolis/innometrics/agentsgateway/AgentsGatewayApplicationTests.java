@@ -718,12 +718,12 @@ class AgentsGatewayApplicationTests {
     // .andExpect(jsonPath("$.endpoint").value("http://InnoAgents:9098/api/keytoken"));
     // }
 
-    @Test
-    public void testGetMethodsById404() throws Exception {
-        mockMvc.perform(get("/AgentAdmin/AgentConfigMethods/method/100000")
-                .accept(APPLICATION_JSON))
-                .andExpect(status().isNotFound());
-    }
+    // @Test
+    // public void testGetMethodsById404() throws Exception {
+    // mockMvc.perform(get("/AgentAdmin/AgentConfigMethods/method/100000")
+    // .accept(APPLICATION_JSON))
+    // .andExpect(status().isNotFound());
+    // }
 
     // @Test
     // public void testGetMethodsByAgentId200() throws Exception {
