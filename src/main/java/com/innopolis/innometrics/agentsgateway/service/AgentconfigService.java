@@ -1,16 +1,22 @@
 package com.innopolis.innometrics.agentsgateway.service;
 
-import com.innopolis.innometrics.agentsgateway.DTO.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.innopolis.innometrics.agentsgateway.DTO.AgentConfigResponse;
+import com.innopolis.innometrics.agentsgateway.DTO.AgentListResponse;
+import com.innopolis.innometrics.agentsgateway.DTO.AgentResponse;
+import com.innopolis.innometrics.agentsgateway.DTO.IAgentStatus;
+import com.innopolis.innometrics.agentsgateway.DTO.MethodConfigDTO;
+import com.innopolis.innometrics.agentsgateway.DTO.ParamsConfigDTO;
 import com.innopolis.innometrics.agentsgateway.entity.Agentconfig;
 import com.innopolis.innometrics.agentsgateway.entity.Agentconfigdetails;
 import com.innopolis.innometrics.agentsgateway.entity.Agentconfigmethods;
 import com.innopolis.innometrics.agentsgateway.repository.AgentconfigRepository;
 import com.innopolis.innometrics.agentsgateway.repository.AgentconfigmethodsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class AgentconfigService {
@@ -33,7 +39,7 @@ public class AgentconfigService {
     AgentsxcompanyService agentsxcompanyService;
 
     public AgentConfigResponse getAgentConfig(Integer agentId, String CallType) {
-        List<Agentconfigmethods> result = this.agentconfigmethodsRepository.findByAgentid(agentId);
+        List<Agentconfigmethods> result = this.agentconfigmethodsRepository.findByAgentId(agentId);
         if (result == null) {
             return null;
         }
@@ -56,9 +62,7 @@ public class AgentconfigService {
                                 agentConfigMethod.getMethodid(),
                                 agentConfigMethod.getOperation(),
                                 agentConfigMethod.getDescription(),
-                                parameters
-                        )
-                );
+                                parameters));
             }
         }
 
@@ -74,9 +78,7 @@ public class AgentconfigService {
                             Integer.valueOf(agentStatus.getAgentid()),
                             agentStatus.getAgentname(),
                             agentStatus.getDescription(),
-                            agentStatus.getIsconnected()
-                    )
-            );
+                            agentStatus.getIsconnected()));
         }
 
         return agentListResponse;

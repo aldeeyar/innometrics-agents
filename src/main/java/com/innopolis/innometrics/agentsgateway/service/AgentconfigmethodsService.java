@@ -1,12 +1,17 @@
 package com.innopolis.innometrics.agentsgateway.service;
 
-import com.innopolis.innometrics.agentsgateway.entity.Agentconfigdetails;
-import com.innopolis.innometrics.agentsgateway.entity.Agentconfigmethods;
-import com.innopolis.innometrics.agentsgateway.repository.AgentconfigmethodsRepository;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import com.innopolis.innometrics.agentsgateway.entity.Agentconfigdetails;
+import com.innopolis.innometrics.agentsgateway.entity.Agentconfigmethods;
+import com.innopolis.innometrics.agentsgateway.repository.AgentconfigmethodsRepository;
 
 @Service
 public class AgentconfigmethodsService {
@@ -23,7 +28,7 @@ public class AgentconfigmethodsService {
     }
 
     public List<Agentconfigmethods> getMethodsByAgentId(Integer agentId) {
-        return this.agentconfigmethodsRepository.findByAgentid(agentId);
+        return this.agentconfigmethodsRepository.findByAgentId(agentId);
     }
 
     public Agentconfigmethods getMethodById(Integer methodId) {
@@ -41,10 +46,10 @@ public class AgentconfigmethodsService {
         Agentconfigmethods createdEntity = this.agentconfigmethodsRepository.save(agentconfigmethods);
 
         /*
-        for (Agentconfigdetails configParameter : configParameters) {
-            configParameter.setAgentconfigmethods(createdEntity);
-            this.agentconfigdetailsService.postDetails(configParameter);
-        }
+         * for (Agentconfigdetails configParameter : configParameters) {
+         * configParameter.setAgentconfigmethods(createdEntity);
+         * this.agentconfigdetailsService.postDetails(configParameter);
+         * }
          */
 
         return createdEntity;
@@ -65,7 +70,7 @@ public class AgentconfigmethodsService {
     }
 
     public List<Agentconfigmethods> deleteMethodsByAgentId(Integer agentId) {
-        List<Agentconfigmethods> methods = this.agentconfigmethodsRepository.findByAgentid(agentId);
+        List<Agentconfigmethods> methods = this.agentconfigmethodsRepository.findByAgentId(agentId);
         if (methods == null || methods.isEmpty()) {
             return null;
         }
