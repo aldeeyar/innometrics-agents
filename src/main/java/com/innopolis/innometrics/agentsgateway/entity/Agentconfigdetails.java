@@ -47,6 +47,9 @@ public class Agentconfigdetails {
     private String requestparam;
 
     @Column
+    private String requesttype;
+
+    @Column
     private String isactive;
 
     @Column
